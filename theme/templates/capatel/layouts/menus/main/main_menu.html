@@ -1,0 +1,43 @@
+{% load menu_tags wagtailimages_tags wagtailcore_tags %}
+<div id="header-sticky" class="menu-area">
+    <div class="container">
+        <div class="second-menu">
+            <div class="row align-items-center">
+                <div class="col-xl-2 col-lg-2">
+                    <div class="logo">
+
+                        <a href="/">{% image settings.organization.SiteSettings.site_logo max-280x70 format-webp preserve-svg %}</a>
+                    </div>
+                </div>
+                <div class="col-xl-7 col-lg-7">
+
+                    <div class="main-menu text-right text-xl-right">
+                        <nav id="mobile-menu">
+                            <ul>
+                                {% for item in menu_items %}
+                                    <li class="{{ item.active_class }}{% if item.has_children_in_menu %} has-sub{% endif %}">
+                                        <a href="{{ item.href }}" >{{ item.text }}{% if item.has_children_in_menu %} <span class="caret"></span>{% endif %}</a>
+                                        {% if item.has_children_in_menu %}
+                                            {% sub_menu item template="capatel/layouts/menus/main/sub_menu_dropdown.html" %}
+                                        {% endif %}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <div class="col-xl-1 col-lg-1 text-center d-none d-lg-block mt-15 mb-15">
+                    <a href="contact.html" class="menu-tigger"><i class="fal fa-search"></i></a>
+                </div>
+                <div class="col-xl-2 col-lg-2 text-right d-none d-lg-block mt-15 mb-15">
+                    <a href="{% slugurl 'contact-us' %}" class="btn ss-btn">Get A Quote</a>
+                </div>
+
+
+                <div class="col-12">
+                    <div class="mobile-menu"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

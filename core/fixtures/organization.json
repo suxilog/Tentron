@@ -1,0 +1,28 @@
+[
+    {
+      "model": "organization.organization",
+      "pk": 1,
+      "fields": {
+        "name": "Tentron"
+      }
+    },
+    {
+      "model": "wagtailcore.site",
+      "pk": 5,
+      "fields": {
+        "hostname": "tentron.com",
+        "port": 80,
+        "root_page_id": 3,
+        "site_name": "Tentron"
+      }
+    },
+    {
+        "model": "core.extendedsite",
+        "pk": 1,
+        "fields": {
+          "site_ptr_id": 5,
+          "organization_id": 1,
+          "template_folder": "default"
+        }
+      }
+    ]

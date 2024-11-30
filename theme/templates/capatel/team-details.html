@@ -1,0 +1,72 @@
+{% extends 'capatel/base/base.html' %}
+{% load static tentron_tag wagtailcore_tags wagtailimages_tags %}
+{% block content %}
+
+
+
+			<!-- Project Detail -->
+    <section class="team-area-content" >
+        <div class="container">
+
+            <!-- Lower Content -->
+            <div class="lower-content">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 col-md-12 col-sm-12 text-center">
+                        <div class="team-img-box">
+                            {% image self.image fill-570x570 format-webp preserve-svg as img %}
+                            <img src="{{ img.url }}" alt="{{ self.name }}">
+                        </div>
+
+                    </div>
+
+                    <div class="text-column col-lg-6 col-md-12 col-sm-12">
+                        <div class="s-about-content pl-30 wow fadeInRight" data-animation="fadeInRight" data-delay=".2s">
+                            <span>{{ self.designation|default:'' }}</span>
+                            <h2>{{ self.name|default:'' }}</h2>
+                            <p>{{ self.content|richtext }}</p>
+                            <ul>
+                                {% if self.email %}
+                                    <li>
+                                        <div class="icon"><i class="fal fa-envelope"></i> <strong>Email</strong></div>
+                                        <div class="text">{{ self.email }}</div>
+                                    </li>
+                                {% endif %}
+                                {% if self.phone %}
+                                    <li>
+                                        <div class="icon"><i class="fal fa-phone"></i> <strong>Phone</strong></div>
+                                        <div class="text">{{ self.phone }}</div>
+                                    </li>
+                                {% endif %}
+                                {% if self.address %}
+                                    <li>
+                                        <div class="icon"><i class="fal fa-map-marker-alt"></i><strong>Address</strong></div>
+                                        <div class="text">{{ self.address }}</div>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                            {% if self.social %}
+                                <div class="social">
+                                    {% for block in self.social %}
+                                        {% if block.block_type == 'socials' %}
+                                            <a href="{{ block.value.social_link }}"><i class="{{ block.value.icon }}"></i></a>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+
+
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+    </section>
+    <!--End Project Detail -->
+
+
+{% endblock %}

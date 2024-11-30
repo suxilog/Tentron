@@ -1,0 +1,102 @@
+{% extends 'capatel/base/base.html' %}
+{% load static tentron_tag wagtailcore_tags wagtailimages_tags  %}
+{% block content %}
+
+
+		     <!-- contact-area -->
+    <section id="contact" class="contact-area after-none contact-bg pt-120 pb-120 p-relative fix" >
+
+        <div class="container">
+
+            <div class="row">
+
+                <div class="col-lg-5">
+                    <div class="contact-info" style="background: url({% static 'templates/capatel/img/bg/footer-bg.png' %}) no-repeat;background-size: cover;">
+                        {% for block in settings.organization.SiteSettings.contact_content %}
+
+                            <div class="single-cta pb-30 mb-30 wow fadeInUp animated" data-animation="fadeInDown animated" data-delay=".2s">
+                                <div class="f-cta-icon">
+                                    {% if block.value.icon_image %}
+                                        <picture>
+                                            {% image block.value.image width-150 format-webp as webp_image %}
+                                            <source srcset="{{ webp_image.url }}" type="image/webp">
+                                            {% image block.value.image width-150 format-jpeg as jpeg_image %}
+                                            <source srcset="{{ jpeg_image.url }}" type="image/jpeg">
+                                            {% image block.value.image width-150 format-png as png_image %}
+                                            <img src="{{ png_image.url }}" alt="">
+                                        </picture>
+                                    {% else %}
+                                        <i class="{{ block.value.icon }}"></i>
+                                    {% endif %}
+                                </div>
+                                <h5>{{ block.value.title }}</h5>
+                                <p>{{ block.value.description|richtext }}</p>
+                            </div>
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+                <div class="col-lg-7">
+                    <div class="contact-bg02 wow fadeInLeft  animated">
+                        <div class="section-title center-align">
+                            <h5>{{ self.title }}</h5>
+                            <h2>
+                                {{ self.sub_title|richtext }}
+                            </h2>
+
+                        </div>
+                        <div class="intro">
+                            <p>{{ self.intro|richtext }}</p>
+                        </div>
+
+                        <form action="{% pageurl page %}" id="contact_page_id" method="POST" class="contact-form mt-30">
+                            {% csrf_token %}
+                            <div class="row">
+                                {% for field in form %}
+                                    <div class="col-lg-12">
+                                        <div class="contact-field p-relative c-{{ field.name }} mb-30">
+                                            <label for="{{ field.id_for_label }}">
+                                                {{ field.label }}
+                                            </label>
+                                            {{ field }}
+                                            {% if field.errors %}
+                                                <div class="error">{{ field.errors.as_text }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+
+                                <div class="col-lg-12">
+
+                                    <div class="slider-btn">
+                                        <button class="btn ss-btn" data-animation="fadeInRight" data-delay=".8s">Submit Now</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+            <!-- contact-area-end -->
+               <!-- map-area-end -->
+    <div class="map fix">
+        <div class="container-flud">
+            <div class="row">
+                <div class="col-lg-12">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d747.7183951524436!2d120.35910277776725!3d36.316885418620615!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x35966e314f0cc237%3A0x5edc73ecdc8e7335!2z5Y2O5qGl56S-5Yy65paH5YyW5rS75Yqo5a6k!5e0!3m2!1szh-CN!2sus!4v1686294326756!5m2!1szh-CN!2sus" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+		     <!-- map-area-end -->
+
+
+{% endblock %}

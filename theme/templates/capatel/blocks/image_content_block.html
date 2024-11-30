@@ -1,0 +1,6 @@
+{% load static wagtailcore_tags wagtailimages_tags %}
+<figure>
+    {% image value.image fill-255x276 format-webp preserve-svg as img %}
+    <img src="{{ img.url }}" alt="{% if value.caption %}{{ value.catpion }}{% else %}{{ img.alt }}{% endif %} ">
+    {{ value.content|richtext }}
+</figure>

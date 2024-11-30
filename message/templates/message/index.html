@@ -1,0 +1,24 @@
+{% extends "wagtailadmin/base.html" %}
+{% block titletag %}{{ current_year }} Messages{% endblock %}
+
+{% block extra_css %}
+    {{ block.super }}
+    <style>
+        table.month {
+            margin: 20px;
+        }
+        table.month td, table.month th {
+            padding: 5px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    {% include "wagtailadmin/shared/header.html" with title="Messages" icon="date" %}
+
+    <div class="nice-padding">
+        {% for message in tentron_messages %}
+            {{ message }}
+        {% endfor %}
+    </div>
+{% endblock %}

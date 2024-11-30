@@ -1,0 +1,5 @@
+{% extends "wagtailadmin/home.html" %}
+{% load wagtailcore_tags %}
+{% wagtail_site as current_site %}
+
+{% block branding_welcome %}Welcome {% if current_site and current_site.site_name %}to - {{ current_site.site_name }} Site{% else %}{% endif %}{% endblock %}

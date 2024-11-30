@@ -1,0 +1,31 @@
+{% load i18n tentron_tag %}
+<table class="listing">
+    <col width="50%"/>
+    <col width="50%"/>
+    <thead>
+        <tr>
+            <th class="title">{% trans "Title" %}</th>
+            {% if request.user.is_superuser %}
+            <th>Site</th>
+            {% endif %}
+            <th class="type">{% trans "Origin" %}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for fp in form_pages %}
+            <tr>
+                <td class="title">
+                    <div class="title-wrapper"><a href="{% url 'wagtailforms:list_submissions' fp.id %}">{{ fp|capfirst }}</a></div>
+                </td>
+                {% if request.user.is_superuser %}
+                <td class="site">
+                    <small>{{ fp.specific.get_site_name }}</small>
+                </td>
+                {% endif %}
+                <td class="type">
+                    <small><a href="{% url 'wagtailadmin_pages:edit' fp.id %}" class="nolink">{{ fp.content_type.name |capfirst }} ({{ fp.content_type.app_label }}.{{ fp.content_type.model }})</a></small>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

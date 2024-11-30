@@ -1,0 +1,15 @@
+尊敬的用户，
+
+您好！我们收到了一条新的询盘，请及时处理。
+
+询盘详情：
+- 客户姓名：{{ form_data.first_name }} {{ form_data.last_name }}
+- 邮箱：{{ form_data.email }}
+- 电话：{{ form_data.phone_number }}
+- 信息：{{ form_data.message }}
+- 产品：{{ product_name }}
+
+感谢您的关注和支持！
+
+顺祝商祺！
+Tentrons团队

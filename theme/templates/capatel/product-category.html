@@ -1,0 +1,81 @@
+{% extends 'capatel/base/base.html' %}
+{% load static tentron_tag %}
+{% block content %}
+
+<!-- shop-area -->
+    <section class="shop-area pt-120 pb-120 p-relative " data-animation="fadeInUp animated" data-delay=".2s">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-sm-6">
+                    <p class="mt-20 mb-30">Showing
+                        {{ page_obj.start_index }}–{{ page_obj.end_index }}
+                        of {{ page_obj.paginator.count }} results</p>
+                </div>
+                <div class="col-lg-6 col-sm-6 text-right" style="display: none;">
+                    <select name="orderby" class="orderby" aria-label="Shop order">
+                        <option value="menu_order" selected="selected">Default sorting</option>
+                        <option value="popularity">Sort by popularity</option>
+                        <option value="rating">Sort by average rating</option>
+                        <option value="date">Sort by latest</option>
+                        <option value="price">Sort by price: low to high</option>
+                        <option value="price-desc">Sort by price: high to low</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row align-items-center">
+                {% for product_item in page_obj %}
+                    <div class="col-lg-4 col-md-6">
+                        <div class="product mb-40">
+                            <div class="product__img">
+                                <a href="{{ product_item.url }}"><img src="/static/templates/capatel/img/shop/img4.jpg" alt=""></a>
+                                <div class="product-action text-center">
+
+                                    <a href="{{ product_item.url }}">Add Cart</a>
+
+                                </div>
+                            </div>
+                            <div class="product__content text-center pt-30">
+                                <span class="pro-cat"><a href="{{ product_item.url }}">{{ product_item.title }}</a></span>
+                                <h2 class="pro-title"><a href="{{ product_item.url }}">{{ product_item.title }}</a></h2>
+                                <div class="price">
+                                    <span>$95.00</span>
+                                    <span class="old-price">$120.00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="pagination-wrap mt-50 text-center">
+                        <nav>
+                            <ul class="pagination">
+                                {% if page_obj.has_previous %}
+                                    <li class="page-item"><a href="?page={{ page_obj.previous_page_number }}"><i class="fas fa-angle-double-left"></i></a></li>
+                                {% endif %}
+                                {% for i in page_obj.paginator.page_range %}
+                                    {% if page_obj.number == i %}
+                                        <li class="page-item active"><a href="?page={{ i }}">{{ i }}</a></li>
+                                    {% else %}
+                                        <li class="page-item"><a href="?page={{ i }}">{{ i }}</a></li>
+                                    {% endif %}
+                                {% endfor %}
+                                {% if page_obj.has_next %}
+                                    <li class="page-item"><a href="?page={{ page_obj.paginator.num_pages }}"><i class="fas fa-angle-double-right"></i></a></li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <div></div></div>
+        </div>
+    </section>
+<!-- shop-area-end -->
+
+
+
+
+{% endblock %}

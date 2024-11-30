@@ -1,0 +1,21 @@
+{% load wagtailcore_tags %}
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead class="text-center">
+            <tr>
+                {% for col in value.columns %}
+                    <th class="align-middle" scope="col">{{ col.heading }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody class="text-center">
+            {% for row in value.rows %}
+                <tr>
+                    {% for block in row %}
+                        <td class="align-middle">{% include_block block %}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

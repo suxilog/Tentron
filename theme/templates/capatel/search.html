@@ -1,0 +1,43 @@
+{% extends 'capatel/base/base.html' %}
+{% load static tentron_tag %}
+{% block body_class %}template-searchresults{% endblock %}
+
+{% block title %}Search: {% if search_query %}{{ search_query }}{% endif %} {% endblock %}
+{% block content %}
+
+    <section id="search-results" class="search-results-area pt-120 pb-120">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="search-results-wrap">
+                        <div class="accordion" id="searchResultsAccordion">
+
+                        <!-- 假设你有一个名为results的列表，包含所有搜索结果 -->
+                        <!-- 每个搜索结果都是一个字典，有'title'和'description'两个键 -->
+                        <!-- 在这个例子中，使用模板引擎的循环结构来迭代每个搜索结果 -->
+                            {% for result in search_results %}
+                                <div class="card">
+                                    <div class="card-header" id="heading{{ loop.index }}">
+                                        <h2 class="mb-0">
+                                            <button class="search-results-btn collapsed" type="button" data-toggle="collapse" data-target="#collapse{{ loop.index }}" aria-expanded="false" aria-controls="collapse{{ loop.index }}">
+                                                {{ result.title }}
+                                            </button>
+                                        </h2>
+                                    </div>
+                                    <div id="collapse{{ loop.index }}" class="collapse" aria-labelledby="heading{{ loop.index }}" data-parent="#searchResultsAccordion">
+                                        <div class="card-body">
+                                            {{ result.description }}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+{% endblock %}

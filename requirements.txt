@@ -1,0 +1,15 @@
+Django>=4.1,<4.2
+wagtail>=5.0,<5.1
+psycopg2-binary
+django-debug-toolbar
+django-extensions
+wagtailmenus
+wagtail-localize
+django-dbbackup
+wagtail-modelchooser
+django-mptt
+factory_boy
+wagtail-factories
+Celery
+docker
+

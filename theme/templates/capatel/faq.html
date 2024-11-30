@@ -1,0 +1,108 @@
+{% extends 'capatel/base/base.html' %}
+{% load static tentron_tag wagtailcore_tags %}
+{% block content %}
+<!-- team-area -->
+    <section id="faq" class="faq-area pt-120 pb-120">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 pb-40">
+                    {{ self.body|richtext }}
+                </div>
+                <div class="col-12">
+
+                    {% if self.category_tab_mode %}
+
+                        <div class="bakix-details-tab">
+                            <ul class="nav text-center justify-content-center pb-30 mb-50" id="faqTab" role="tablist">
+                                {% for category in faq_categories %}
+                                    <li class="nav-item">
+                                        <a class="nav-link {% if forloop.first %}active{% endif %}" id="category-tab-{{ category.id }}" data-toggle="tab" href="#id-category-{{ category.id }}" role="tab" aria-controls="category-{{ category.id }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}">{{ category.name }}</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="tab-content" id="faqTabContent">
+                            {% for category in faq_categories %}
+                                <div class="tab-pane fade {% if forloop.first %}active show{% endif %}" id="id-category-{{ category.id }}" role="tabpanel" aria-labelledby="category-tab-{{ category.id }}">
+                                    <div class="faq-wrap">
+                                        <div class="accordion" id="accordionExample">
+                                            {% for item in faq_items_dict|get_item:category.id %}
+                                                <div class="card">
+                                                    <div class="card-header" id="heading{{ forloop.counter }}">
+                                                        <h2 class="mb-0">
+                                                            <button class="faq-btn collapsed" type="button" data-toggle="collapse" data-target="#collapse-{{ forloop.counter }}" aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}" aria-controls="collapse-{{ forloop.counter }}">
+                                                                {{ item.question }}
+                                                            </button>
+                                                        </h2>
+                                                    </div>
+                                                    <div id="collapse-{{ forloop.counter }}" class="collapse {% if forloop.first %}show{% endif %}" aria-labelledby="heading{{ forloop.counter }}" data-parent="#accordionExample" style="">
+                                                        <div class="card-body">
+                                                            {{ item.answer|richtext }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        </div>
+
+                    {% else %}
+
+                        <div class="col-lg-6 col-md-6">
+                            <div class="faq-wrap">
+                                <div class="accordion" id="accordionExample">
+                                    {% for faq in faq_items_first_half %}
+                                        <div class="card">
+                                            <div class="card-header" id="heading{{ forloop.counter }}">
+                                                <h2 class="mb-0">
+                                                    <button class="faq-btn collapsed" type="button" data-toggle="collapse" data-target="#collapse-{{ forloop.counter }}" aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}" aria-controls="collapse-{{ forloop.counter }}">
+                                                        {{ faq.question }}
+                                                    </button>
+                                                </h2>
+                                            </div>
+                                            <div id="collapse-{{ forloop.counter }}" class="collapse {% if forloop.first %}show{% endif %}" aria-labelledby="heading{{ forloop.counter }}" data-parent="#accordionExample" style="">
+                                                <div class="card-body">
+                                                    {{ faq.answer|richtext }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6">
+                            <div class="faq-wrap">
+                                <div class="accordion" id="accordionExample1">
+                                    {% for faq in faq_items_second_half %}
+                                        <div class="card">
+                                            <div class="card-header" id="heading{{ forloop.counter|add:half_items }}">
+                                                <h2 class="mb-0">
+                                                    <button class="faq-btn collapsed" type="button" data-toggle="collapse" data-target="#collapse-{{ forloop.counter|add:half_items }}" aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}" aria-controls="collapse-{{ forloop.counter|add:half_items }}">
+                                                        {{ faq.question }}
+                                                    </button>
+                                                </h2>
+                                            </div>
+                                            <div id="collapse-{{ forloop.counter|add:half_items }}" class="collapse {% if forloop.first %}show{% endif %}" aria-labelledby="heading{{ forloop.counter|add:half_items }}" data-parent="#accordionExample" style="">
+                                                <div class="card-body">
+                                                    {{ faq.answer|richtext }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                    {% endif %}
+                </div>
+            </div>
+        </section>
+        <!-- team-area-end -->
+
+
+{% endblock %}
+

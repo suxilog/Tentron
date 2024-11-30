@@ -1,0 +1,28 @@
+{% load wagtailcore_tags %}
+{% load i18n wagtailadmin_tags %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% trans 'Welcome to visit Tentron Ecommerce System' %}</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    </head>
+    <body>
+        <div class="container">
+            <div class="jumbotron mt-3">
+                <h1>{% trans 'Welcome to visit Tentron Ecommerce System!' %}</h1>
+                <p>{% trans 'We are glad you are here.' %}</p>
+                {% if domain %}
+                    <p>{% trans 'You are currently viewing our website with domain' %}: {{ domain }}</p>
+                {% endif %}
+                <p>{% trans 'It seems this domain name is expired in our system. If this is your domain name, please contact us. If you are a visitor, please contact the site owner.' %}</p>
+                {% if referrer %}
+                    <a class="btn btn-primary btn-lg" href="#" role="button">{% trans 'Go back link' %}</a>
+                {% endif %}
+                <a class="btn btn-secondary btn-lg" href="https://www.tentrons.com" role="button">{% trans 'Learn more' %}</a>
+            </div>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    </body>
+</html>

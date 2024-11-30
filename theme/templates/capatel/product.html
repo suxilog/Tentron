@@ -1,0 +1,105 @@
+{% extends 'capatel/base/base.html' %}
+{% load static tentron_tag wagtailcore_tags wagtailimages_tags %}
+{% block content %}
+
+<!-- shop-area -->
+    <section class="shop-area pt-120 pb-120 p-relative " data-animation="fadeInUp animated" data-delay=".2s">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    {{ self.body|richtext }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 col-sm-6">
+                    <p class="mt-20 mb-30">Showing
+                        {{ page_obj.start_index }}–{{ page_obj.end_index }}
+                        of {{ page_obj.paginator.count }} results</p>
+                </div>
+                <div class="col-lg-6 col-sm-6 text-right" style="display: none;">
+                    <select name="orderby" class="orderby" aria-label="Shop order">
+                        <option value="menu_order" selected="selected">Default sorting</option>
+                        <option value="popularity">Sort by popularity</option>
+                        <option value="rating">Sort by average rating</option>
+                        <option value="date">Sort by latest</option>
+                        <option value="price">Sort by price: low to high</option>
+                        <option value="price-desc">Sort by price: high to low</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row align-items-center">
+                {% for product_item in page_obj %}
+                    <div class="col-lg-4 col-md-6">
+                        <div class="product mb-40">
+                            <div class="product__img">
+
+                                <a href="{{ product_item.url }}">
+                                    <picture>
+                                        {% image product_item.main_image width-200 format-webp as webp_image %}
+                                        <source srcset="{{ webp_image.url }}" type="image/webp">
+                                        {% image product_item.main_image width-200 format-jpeg as jpeg_image %}
+                                        <source srcset="{{ jpeg_image.url }}" type="image/jpeg">
+                                        {% image product_item.main_image width-200 format-png as png_image %}
+                                        <img src="{{ png_image.url }}" alt="{% if product_item.main_image.caption %}{{ product_item.main_image.caption }}{% else %}{{ png_image.alt }}{% endif %}">
+                                    </picture>
+                                </a>
+                                {% comment %} <div class="product-action text-center">
+
+                                    <a href="{{ product_item.url }}">Add Cart</a>
+
+                                </div> {% endcomment %}
+                            </div>
+                            <div class="product__content text-center pt-30">
+                                <span class="pro-cat">
+                                    {% for category in product_item.get_categories %}
+
+                                        <a href="{% url 'product_type' category.slug %}">{{ category.name }}</a>
+                                    {% endfor %}
+                                </span>
+                                <h2 class="pro-title"><a href="{{ product_item.url }}">{{ product_item.title }}</a></h2>
+                                <div class="price">
+                                    {% if product_item.sales_price %}
+                                        <span>${{ product_item.sales_price }}</span>
+                                        <span class="old-price">${{ product_item.price }}</span>
+                                    {% else %}
+                                        <span>${{ product_item.price }}</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="pagination-wrap mt-50 text-center">
+                        <nav>
+                            <ul class="pagination">
+                                {% if page_obj.has_previous %}
+                                    <li class="page-item"><a href="?page={{ page_obj.previous_page_number }}"><i class="fas fa-angle-double-left"></i></a></li>
+                                {% endif %}
+                                {% for i in page_obj.paginator.page_range %}
+                                    {% if page_obj.number == i %}
+                                        <li class="page-item active"><a href="?page={{ i }}">{{ i }}</a></li>
+                                    {% else %}
+                                        <li class="page-item"><a href="?page={{ i }}">{{ i }}</a></li>
+                                    {% endif %}
+                                {% endfor %}
+                                {% if page_obj.has_next %}
+                                    <li class="page-item"><a href="?page={{ page_obj.paginator.num_pages }}"><i class="fas fa-angle-double-right"></i></a></li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <div></div></div>
+        </div>
+    </section>
+<!-- shop-area-end -->
+
+
+
+
+{% endblock %}

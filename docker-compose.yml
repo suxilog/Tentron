@@ -1,0 +1,143 @@
+version: '3.7'
+services:
+  backend_app:
+    container_name: backend_app
+    build:
+      context: .
+      args:
+        - HOST_USER_ID=1000
+        - HOST_GROUP_ID=1000
+
+        - CELERY_USER_ID=1005
+        # We need set the same docker group id in docker container as the host, use cat /etc/group to check the group id
+        - DOCKER_GROUP_ID=997
+      dockerfile: Dockerfile
+    init: true
+    restart: unless-stopped
+    volumes:
+      - ./DBbackup:/home/tentron/DBbackup
+      - ./logs/cron_job:/var/log/cron
+      - ./.env.prod:/home/tentron/.env
+      - ./static:/home/app/static
+      - ./media:/home/app/media
+      - ./logs/gunicorn:/var/log/gunicorn
+      - ./logs/celery/celery.log:/var/log/celery/celery.log
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./nginx/sites-available:/home/tentron/nginx/sites-available
+      - ./certbot/conf:/etc/letsencrypt:ro
+
+    expose:
+      - 9000
+    env_file:
+      - ./.env.prod
+
+    environment:
+      - TZ=Asia/Shanghai
+
+    depends_on:
+      - pg_db
+    networks:
+      - tentron_net
+    labels:
+      ofelia.enabled: 'true'
+      ofelia.job-exec.db-backup.schedule: '@daily'
+      ofelia.job-exec.db-backup.command: 'python manage.py dbbackup -z'
+
+      ofelia.job-exec.stop-expired-organization.schedule: '@daily'
+      ofelia.job-exec.stop-expired-organization.command: 'python manage.py stop_expired_organization'
+
+  pg_db:
+    container_name: tentron_pg_db
+    image: postgres:11.12-buster
+    restart: always
+    volumes:
+      - postgres_data_prod:/var/lib/postgresql/data
+    environment:
+      - TZ=Asia/Shanghai
+      - POSTGRES_DB=tentron
+      - POSTGRES_USER=charlie
+      - POSTGRES_PASSWORD=passwordgoeshere
+    ports:
+      - '5432:5432'
+    networks:
+      - tentron_net
+    env_file:
+      - ./.env.prod
+
+  tentron_nginx:
+    container_name: tentron_nginx
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    command: '/bin/sh -c ''while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g "daemon off;"'''
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+      - ./static:/home/app/static
+      - ./media:/home/app/media
+      - ./logs/nginx:/var/log/nginx
+      - ./nginx/sites-available:/etc/nginx/sites-available
+    ports:
+      - 80:80
+      - 443:443
+    depends_on:
+      - backend_app
+
+    env_file:
+      - ./.env
+    environment:
+      - TZ=Asia/Shanghai
+    networks:
+      - tentron_net
+
+  certbot:
+    container_name: CertBot
+    image: certbot/certbot
+    restart: unless-stopped
+    environment:
+      - TZ=Asia/Shanghai
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+      - ./logs/certbot:/var/log/letsencrypt
+    networks:
+      - tentron_net
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+
+  tentron_cron:
+    image: mcuadros/ofelia:latest
+    depends_on:
+      - tentron_nginx
+      - backend_app
+    command: daemon --docker
+    environment:
+      - TZ=Asia/Shanghai
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./logs/cron_job:/tmp/tentron_cron_job
+    networks:
+      - tentron_net
+    labels:
+      ofelia.save-folder: '/tmp/tentron_cron_job'
+      ofelia.save-only-on-error: 'true'
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    restart: unless-stopped
+    environment:
+      - TZ=Asia/Shanghai
+      - RABBITMQ_DEFAULT_USER=charlie
+      - RABBITMQ_DEFAULT_PASS=passwordgoeshere
+      - RABBITMQ_ERLANG_COOKIE=fa7c60f33eb8430ea1fdb50a7a9a579d
+    ports:
+      - 5672:5672
+      - 15672:15672
+
+    networks:
+      - tentron_net
+
+volumes:
+  postgres_data_prod:
+networks:
+  tentron_net:

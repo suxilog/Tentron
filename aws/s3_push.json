@@ -1,0 +1,5 @@
+{
+  "applicationName": "string",
+  "source": "string",
+  "s3Location": "s3://your/bucket/project_built_file...]"
+}

@@ -1,0 +1,131 @@
+{% load static wagtailcore_tags wagtailimages_tags wagtailuserbar wagtailsettings_tags menu_tags %}
+{% wagtail_site as current_site %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>
+            {% block title %}
+                {% if page.seo_title %}{{ page.seo_title }}{% else %}{{ page.title }}{% endif %}
+            {% endblock %}
+            {% block title_suffix %}
+                {% if current_site and current_site.site_name %}- {{ current_site.site_name }}{% endif %}
+            {% endblock %}
+        </title>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {% if settings.organization.SiteSettings.site_favorite_icon %}
+            {% image settings.organization.SiteSettings.site_favorite_icon fill-32x32 format-png preserve-svg as favicon %}
+            <link rel="shortcut icon" type="image/png" href="{{ favicon.url }}">
+        {% else %}
+            <link rel="shortcut icon" type="image/x-icon" href="/static/templates/capatel/img/favicon.ico">
+        {% endif %}
+        <!-- Place favicon.ico in the root directory -->
+
+        {% if page.search_description %}
+            <meta name="description" content="{{ page.search_description }}" />
+        {% else %}
+            <meta name="description" content="{{ page.title }}" />
+        {% endif %}
+        {# extra meta #}
+        {% block extra_meta %}{% endblock extra_meta %}
+
+        {# Force all links in the live preview panel to be opened in a new tab #}
+        {% if request.in_preview_panel %}
+            <base target="_blank">
+        {% endif %}
+        {# Google Tagmanager #}
+        {% if settings.organization.SiteSettings.google_tag_manager_id %}
+        <!-- Google Tag Manager -->
+            <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','{{ settings.organization.SiteSettings.google_tag_manager_id }}');</script>
+        <!-- End Google Tag Manager -->
+        {% endif %}
+
+
+		<!-- CSS here -->
+        <link rel="stylesheet" href="{% static 'templates/capatel/css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'templates/capatel/css/animate.min.css' %}">
+        <link rel="stylesheet" href="{% static 'templates/capatel/css/magnific-popup.css' %}">
+        <link rel="stylesheet" href="{% static 'templates/capatel/fontawesome/css/all.min.css' %}">
+        <link rel="stylesheet" href="{% static 'templates/capatel/font-flaticon/flaticon.css' %}">
+        <link rel="stylesheet" href="{% static 'templates/capatel/css/dripicons.css' %}">
+        <link rel="stylesheet" href="{% static 'templates/capatel/css/slick.css' %}">
+        <link rel="stylesheet" href="{% static 'templates/capatel/css/meanmenu.css' %}">
+        <link rel="stylesheet" href="{% static 'templates/capatel/css/default.css' %}">
+        <link rel="stylesheet" href="{% static 'templates/capatel/css/style.css' %}">
+        <link rel="stylesheet" href="{% static 'templates/capatel/css/responsive.css' %}">
+        {# Global stylesheets #}
+        <link rel="stylesheet" type="text/css" href="{% static 'css/tentron.css' %}">
+        {% block extra_css %}
+        {# Override this in templates to add extra stylesheets #}
+        {% endblock %}
+        {# Custom CSS #}
+        {% if settings.organization.SiteSettings.custom_css %}
+            <style type="text/css">
+                {{ settings.organization.SiteSettings.custom_css }}
+            </style>
+        {% endif %}
+    </head>
+    {% block grapejs %}
+        <body class="{% block body_class %}{% endblock %}">
+            {# Google track services #}
+            {% if settings.organization.SiteSettings.google_tag_manager_id %}
+                <!-- Google Tag Manager (noscript) -->
+                <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ settings.organization.SiteSettings.google_tag_manager_id }}" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+                <!-- End Google Tag Manager (noscript) -->
+            {% endif %}
+
+            {% comment %} {% wagtailuserbar %} {% endcomment %}
+
+            {% include 'capatel/layouts/header.html' %}
+
+            <main>
+                {% include 'capatel/layouts/search_popup.html' %}
+
+                {% include 'capatel/layouts/breadcrumb.html' %}
+
+                {% block content %}{% endblock %}
+            </main>
+        <!-- main-area-end -->
+            {% include 'capatel/layouts/footer.html' %}
+
+        <!-- JS here -->
+            <script src="{% static 'templates/capatel/js/vendor/modernizr-3.5.0.min.js' %}"></script>
+            <script src="{% static 'templates/capatel/js/vendor/jquery-3.6.0.min.js' %}"></script>
+            <script src="{% static 'templates/capatel/js/popper.min.js' %}"></script>
+            <script src="{% static 'templates/capatel/js/bootstrap.min.js' %}"></script>
+            <script src="{% static 'templates/capatel/js/slick.min.js' %}"></script>
+            <script src="{% static 'templates/capatel/js/ajax-form.js' %}"></script>
+            <script src="{% static 'templates/capatel/js/paroller.js' %}"></script>
+            <script src="{% static 'templates/capatel/js/wow.min.js' %}"></script>
+            <script src="{% static 'templates/capatel/js/js_isotope.pkgd.min.js' %}"></script>
+            <script src="{% static 'templates/capatel/js/imagesloaded.min.js' %}"></script>
+            <script src="{% static 'templates/capatel/js/parallax.min.js' %}"></script>
+            <script src="{% static 'templates/capatel/js/jquery.waypoints.min.js' %}"></script>
+            <script src="{% static 'templates/capatel/js/jquery.counterup.min.js' %}"></script>
+            <script src="{% static 'templates/capatel/js/jquery.scrollUp.min.js' %}"></script>
+            <script src="{% static 'templates/capatel/js/jquery.meanmenu.min.js' %}"></script>
+            <script src="{% static 'templates/capatel/js/parallax-scroll.js' %}"></script>
+            <script src="{% static 'templates/capatel/js/jquery.magnific-popup.min.js' %}"></script>
+            <script src="{% static 'templates/capatel/js/element-in-view.js' %}"></script>
+            <script src="{% static 'templates/capatel/js/main.js' %}"></script>
+        {# Global javascript #}
+            <script src="{% static 'js/tentron.js' %}"></script>
+            {% block extra_js %}
+        {# Override this in templates to add extra javascript #}
+            {% endblock %}
+        {# Custom JS #}
+            {% if settings.organization.SiteSettings.custom_js %}
+                <script>
+                    {% autoescape off %}
+                        {{ settings.organization.SiteSettings.custom_js }}
+                    {% endautoescape %}
+                </script>
+            {% endif %}
+        </body>
+    {% endblock %}
+</html>

@@ -1,0 +1,253 @@
+{% extends 'capatel/base/base.html' %}
+{% load static tentron_tag wagtailcore_tags wagtailimages_tags  %}
+{% block content %}
+
+
+
+
+			<!-- shop-banner-area start -->
+    <section class="shop-banner-area pt-120 pb-90 " data-animation="fadeInUp animated" data-delay=".2s">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-7">
+                    <div class="shop-thumb-tab mb-30">
+                        <ul class="nav" id="myTab2" role="tablist">
+                            {% for gallery_item in page.gallery_images %}
+
+
+                                <li class="nav-item">
+                                    <a class="nav-link {% if forloop.first %}active{% endif %}" id="product-gallery-tab-{{ forloop.counter }}" data-toggle="tab" href="#product-gallery-{{ forloop.counter }}" role="tab"
+                                       aria-selected="{% if forloop.first %}true{% else %}false{% endif %}">
+                                        <picture>
+                                            {% image gallery_item.image width-200 format-webp as webp_image %}
+                                            <source srcset="{{ webp_image.url }}" type="image/webp">
+                                            {% image gallery_item.image width-200 format-jpeg as jpeg_image %}
+                                            <source srcset="{{ jpeg_image.url }}" type="image/jpeg">
+                                            {% image gallery_item.image width-200 format-png as png_image %}
+                                            <img src="{{ png_image.url }}" alt="{% if gallery_item.caption %}{{ gallery_item.caption }}{% else %}{{ png_image.alt }}{% endif %}">
+                                        </picture>
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="product-details-img mb-30">
+                        <div class="tab-content" id="myTabContent2">
+                            {% for gallery_item in page.gallery_images %}
+
+
+                                <div class="tab-pane fade show {% if forloop.first %}active{% endif %}" id="product-gallery-{{ forloop.counter }}" role="tabpanel">
+                                    <div class="product-large-img">
+                                        <picture>
+                                            {% image gallery_item.image width-400 format-webp as webp_image %}
+                                            <source srcset="{{ webp_image.url }}" type="image/webp">
+                                            {% image gallery_item.image width-400 format-jpeg as jpeg_image %}
+                                            <source srcset="{{ jpeg_image.url }}" type="image/jpeg">
+                                            {% image gallery_item.image width-400 format-png as png_image %}
+                                            <img src="{{ png_image.url }}" alt="{% if gallery_item.caption %}{{ gallery_item.caption }}{% else %}{{ png_image.alt }}{% endif %}">
+                                        </picture>
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-5">
+                    <div class="product-details mb-30">
+                        <div class="product-details-title">
+                            {% comment %} <p>Workstead</p> {% endcomment %}
+                            <h1>{{ page.title }}</h1>
+                            <div class="price details-price pb-30 mb-20">
+                                {% if page.sales_price %}
+                                    <span>${{ page.sales_price }}</span>
+                                    <span class="old-price">${{ page.price }}</span>
+                                {% else %}
+                                    <span>${{ page.price }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <p>{{ page.short_description|default:""|safe }}</p>
+                        <div class="product-cat mt-30 mb-30">
+                            <span>Category: </span>
+                            {% for category_item in self.get_categories %}
+                                <a href="{% url 'product_type' category_item.type.slug %}">{{ category_item.type.name }}{% if not forloop.last %},{% endif %}</a>
+                            {% endfor %}
+                        </div>
+
+                        <div class="product-details-action">
+                            {% if not settings.organization.SiteSettings.inquiry_mode %}
+                                <form action="#">
+                                    <div class="plus-minus">
+                                        <div class="cart-plus-minus"><input type="text" value="1" /></div>
+                                    </div>
+                                    <button class="btn btn-black" type="submit">Add to cart</button>
+                                </form>
+                            {% else %}
+                                <button class="btn btn-black" type="submit">Get a quote</button>
+                            {% endif %}
+                        </div>
+
+                        <div class="product-social mt-45">
+                            <a href="#"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-behance"></i></a>
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fab fa-youtube"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+        <!-- shop-banner-area end -->
+        <!-- product-desc-area start -->
+    <section class="product-desc-area pb-55">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="bakix-details-tab">
+                        <ul class="nav text-center justify-content-center pb-30 mb-50" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="desc-tab" data-toggle="tab" href="#id-desc" role="tab"
+                                   aria-controls="home" aria-selected="true">Description </a>
+                            </li>
+                            {% if page.single_product_page_attribute_values.all %}
+                                <li class="nav-item">
+                                    <a class="nav-link" id="id-add-in" data-toggle="tab" href="#id-add" role="tab"
+                                       aria-controls="information" aria-selected="false">Additional Information</a>
+                                </li>
+                            {% endif %}
+                            {% if settings.organization.SiteSettings.inquiry_mode %}
+                                <li class="nav-item">
+                                    <a class="nav-link" id="inquiry-tab" data-toggle="tab" href="#id-inquiry" role="tab"
+                                       aria-controls="inquiry" aria-selected="false"> Get A Quote </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="id-desc" role="tabpanel" aria-labelledby="desc-tab">
+                            <div class="event-text mb-40">
+                                {% for block in page.content %}
+                                    <section>{% include_block block %}</section>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% if page.single_product_page_attribute_values.all %}
+                            <div class="tab-pane fade" id="id-add" role="tabpanel" aria-labelledby="id-add-in">
+                                <div class="additional-info">
+                                    <div class="table-responsive">
+                                        <h4>Additional information</h4>
+                                        <table class="table">
+                                            <tbody>
+                                                {% for attribute_item in page.single_product_page_attribute_values.all %}
+                                                    <tr>
+                                                        <th>{{ attribute_item.attribute.name|capfirst }}</th>
+                                                        <td class="product_{{ attribute_item.attribute.name|slugify }}">{{ attribute_item.attribute_value }}</td>
+                                                    </tr>
+                                                {% endfor %}
+
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% if settings.organization.SiteSettings.inquiry_mode %}
+                            <div class="tab-pane fade" id="id-inquiry" role="tabpanel" aria-labelledby="inquiry-tab">
+                                <div class="contact-bg02 text-center">
+                                    <div class="section-title  mb-50">
+                                        <h2>
+                                            Get A Quote
+                                        </h2>
+
+                                    </div>
+
+                                    <form action="{% pageurl product_form_page %}" id="product_quote_id" class="contact-form mt-30" method="POST">
+                                        {% csrf_token %}
+                                        <div class="row">
+                                            {% for x in product_form_page.form_fields.all %}
+                                                {% for field in form %}
+                                                    {% if field.name == x.clean_name %}
+                                                        {% if field.name != 'product_id' %}
+                                                            <div class="col-lg-{{ x.column_width }}">
+                                                                <div class="contact-field p-relative c-{{ field.name }} mb-30">
+                                                                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                                                    {{ field }}
+                                                                    {% if field.errors %}
+                                                                        <div class="error">{{ field.errors.as_text }}</div>
+                                                                    {% endif %}
+                                                                </div>
+                                                            </div>
+                                                        {% endif %}
+                                                    {% endif %}
+                                                {% endfor %}
+                                            {% endfor %}
+                                            <input type="hidden" name="product_id" id="id_product_id" value="{{ page.id }}">
+                                            <input type="hidden" name='page_type' id="id_page_type" value='{{ page.get_page_class_name }}'>
+
+                                        </div>
+                                        <div class="slider-btn mb-70">
+                                            <button class="btn ss-btn active" data-animation="fadeInRight" data-delay=".8s">Submit Now</button>
+                                        </div>
+                                    </div>
+
+                                </form>
+
+                            </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+        <!-- product-desc-area end -->
+
+
+
+
+{% endblock %}
+{% block extra_js %}
+    {{ block.super }}
+    <script>
+    // use strict
+        'use strict';
+    // DOMContentLoaded ensures the script runs after the DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', function(){
+        // Select all input elements inside product_quote_id
+            let inputs = document.querySelectorAll('#product_quote_id input');
+            let textareas = document.querySelectorAll('#product_quote_id textarea');
+
+
+            for(let i = 0; i < inputs.length; i++){
+            // For each input, find the associated label
+                let input = inputs[i];
+                let label = document.querySelector(`label[for="${input.id}"]`);
+                if (label) {
+                // If a label is found, set its text as the input's placeholder
+                    input.placeholder = label.innerText;
+                // use js remove the label element
+                    label.remove();
+                }
+
+            }
+        // for textarea
+            for(let i = 0; i < textareas.length; i++){
+            // For each textarea, find the associated label
+                let textarea = textareas[i];
+                let label = document.querySelector(`label[for="${textarea.id}"]`);
+                if (label) {
+                    textarea.placeholder = label.innerText;
+                // use js remove the label element
+                    label.remove();
+                }
+
+            }
+        });
+    </script>
+
+{% endblock %}

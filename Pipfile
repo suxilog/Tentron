@@ -1,0 +1,17 @@
+[[source]]
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+verify_ssl = true
+name = "pip_conf_index_global"
+
+[packages]
+django = ">=4.1,<4.2"
+wagtail = ">=4.2,<4.3"
+psycopg2-binary = "*"
+django-debug-toolbar = "*"
+django-extensions = "*"
+
+[dev-packages]
+isort = "*"
+
+[requires]
+python_version = "3.10"

@@ -1,0 +1,72 @@
+{% load menu_tags %}
+{% comment %} {% flat_menu 'footer' max_levels=1 show_menu_heading=False  fall_back_to_default_site_menus=True %} {% endcomment %}
+<!-- header -->
+<header class="header-area  header-three">
+    <div class="header-top second-header d-none d-md-block">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8 col-md-8 d-none  d-md-block">
+                    <div class="header-cta">
+                        <ul>
+                            <li>
+                                <i class="fas fa-envelope"></i>
+
+                                <span>sales@tentrons.com</span>
+                            </li>
+                            <li>
+                                <i class="far fa-map-marker-alt"></i>
+                                <span>NO.5 Fuhua Rd. Jimo Dist. Qingdao, Shandong, China</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 d-none d-lg-block">
+                    <div class="header-social text-right">
+                        <span>
+                            {% for block in settings.organization.SiteSettings.social_media %}
+                                <a href="{{ block.value.link }}" title="{{ block.value.title }}"><i class="{{ block.value.icon }}"></i></a>
+                            {% endfor %}
+                        </span>
+                        <!--  /social media icon redux -->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    {% main_menu template="capatel/layouts/menus/main/main_menu.html" sub_menu_templates="capatel/layouts/menus/main/sub_menu.html" %}
+
+</header>
+<!-- header-end -->
+<!-- offcanvas-area -->
+<div class="offcanvas-menu">
+    <span class="menu-close"><i class="fas fa-times"></i></span>
+    <form role="search" id="searchform"   class="searchform" action="{% url 'search' %}" method="get">
+        <input type="text"  id="search" placeholder="Search" name="query"{% if search_query %} value="{{ search_query }}"{% endif %}>
+        <button><i class="fa fa-search"></i></button>
+    </form>
+
+
+    <div id="cssmenu3" class="menu-one-page-menu-container">
+        <ul id="menu-one-page-menu-2" class="menu">
+            <li class="menu-item menu-item-type-custom menu-item-object-custom"><a href="index.html">Home</a></li>
+            <li class="menu-item menu-item-type-custom menu-item-object-custom"><a href="about.html">About Us</a></li>
+            <li class="menu-item menu-item-type-custom menu-item-object-custom"><a href="services.html">Services</a></li>
+            <li class="menu-item menu-item-type-custom menu-item-object-custom"><a href="pricing.html">Pricing </a></li>
+            <li class="menu-item menu-item-type-custom menu-item-object-custom"><a href="team.html">Team </a></li>
+
+            <li class="menu-item menu-item-type-custom menu-item-object-custom"><a href="projects.html">Gallery Study</a></li>
+            <li class="menu-item menu-item-type-custom menu-item-object-custom"><a href="blog.html">Blog</a></li>
+            <li class="menu-item menu-item-type-custom menu-item-object-custom"><a href="contact.html">Contact</a></li>
+        </ul>
+    </div>
+
+    <div id="cssmenu2" class="menu-one-page-menu-container">
+        <ul id="menu-one-page-menu-1" class="menu">
+            <li class="menu-item menu-item-type-custom menu-item-object-custom"><a href="#home"><span>+8 12 3456897</span></a></li>
+            <li class="menu-item menu-item-type-custom menu-item-object-custom"><a href="#howitwork"><span>info@example.com</span></a></li>
+        </ul>
+    </div>
+</div>
+<div class="offcanvas-overly"></div>
+     <!-- offcanvas-end -->

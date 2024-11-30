@@ -1,0 +1,100 @@
+{% extends 'capatel/base/base.html' %}
+{% load static tentron_tag wagtailcore_tags wagtailimages_tags  %}
+{% block content %}
+
+
+    <section class="product-form-area after-none contact-bg pt-120 pb-120 p-relative fix">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="contact-bg02 text-center">
+                        <div class="section-title  mb-50">
+                            <h2>
+                                {{ page.title }}
+                            </h2>
+
+                        </div>
+
+                        <form action="{% pageurl page %}" id="product_quote_id" class="contact-form mt-30" method="POST">
+                            {% csrf_token %}
+                            <div class="row">
+                                {% for x in page.form_fields.all %}
+                                    {% for field in form %}
+                                        {% if field.name == x.clean_name %}
+                                            {% if field.name != 'product_id' %}
+                                                <div class="col-lg-{{ x.column_width }}">
+                                                    <div class="contact-field p-relative c-{{ field.name }} mb-30">
+                                                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                                        {{ field }}
+                                                        {% if field.errors %}
+                                                            <div class="error">{{ field.errors.as_text }}</div>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endfor %}
+                                <input type="hidden" name="product_id" id="id_product_id" value="{{ page.id }}">
+                                <input type="hidden" name='page_type' id="id_page_type" value='{{ page.get_page_class_name }}'>
+
+                            </div>
+                            <div class="slider-btn mb-70">
+                                <button class="btn ss-btn active" data-animation="fadeInRight" data-delay=".8s">Submit Now</button>
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    </section>
+        <!-- product-desc-area end -->
+
+
+
+
+{% endblock %}
+
+{% block extra_js %}
+    {{ block.super }}
+    <script>
+    // use strict
+        'use strict';
+    // DOMContentLoaded ensures the script runs after the DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', function(){
+        // Select all input elements inside product_quote_id
+            let inputs = document.querySelectorAll('#product_quote_id input');
+            let textareas = document.querySelectorAll('#product_quote_id textarea');
+
+
+            for(let i = 0; i < inputs.length; i++){
+            // For each input, find the associated label
+                let input = inputs[i];
+                let label = document.querySelector(`label[for="${input.id}"]`);
+                if (label) {
+                // If a label is found, set its text as the input's placeholder
+                    input.placeholder = label.innerText;
+                // use js remove the label element
+                    label.remove();
+                }
+
+            }
+        // for textarea
+            for(let i = 0; i < textareas.length; i++){
+            // For each textarea, find the associated label
+                let textarea = textareas[i];
+                let label = document.querySelector(`label[for="${textarea.id}"]`);
+                if (label) {
+                    textarea.placeholder = label.innerText;
+                // use js remove the label element
+                    label.remove();
+                }
+
+            }
+        });
+    </script>
+
+{% endblock %}

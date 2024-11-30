@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>新询盘通知</title>
+    </head>
+    <body>
+        <h2>尊敬的用户，</h2>
+        <p>您好！我们收到了一条新的询盘，请及时处理。</p>
+        <h3>询盘详情：</h3>
+        <ul>
+            <li>客户姓名：{{ form_data.first_name }} {{ form_data.last_name }}</li>
+            <li>邮箱：{{ form_data.email }}</li>
+            <li>电话：{{ form_data.phone_number }}</li>
+            <li>信息：{{ form_data.message }}</li>
+            <li>产品：{{ product_name }}</li>
+        </ul>
+        <p>感谢您的关注和支持！</p>
+        <p>顺祝商祺！<br>
+            Tentrons团队</p>
+    </body>
+</html>

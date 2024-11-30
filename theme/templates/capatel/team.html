@@ -1,0 +1,52 @@
+{% extends 'capatel/base/base.html' %}
+{% load static wagtailcore_tags tentron_tag wagtailimages_tags %}
+{% block content %}
+
+
+			<!-- team-area -->
+    <section id="team" class="team-area2 pt-120 pb-90" style="background: url(img/bg/aliment-right3.png) no-repeat; background-position: right center;">
+        <div class="container">
+
+            <div class="row align-items-center">
+
+
+                {% for team_item in team_detail_pages %}
+                    <div class="col-lg-4 col-md-6">
+                        <div class="single-team mb-30 ">
+                            <div class="team-thumb">
+                                <div class="brd">
+                                    {% image team_item.image fill-570x570 format-webp preserve-svg as img %}
+                                    {% if img %}
+                                        <img src="{{ img.url }}" alt="{{ team_item.name }}">
+                                    {% else %}
+                                        <img src="/static/templates/capatel/img/team/team_img01.png" alt="img">
+                                    {% endif %}
+                                </div>
+                                <div class="social align-items-center">
+                                    {% for block in team_item.social %}
+                                        {% if block.block_type == 'socials' %}
+                                            <a href="{{ block.value.social_link }}"><i class="{{ block.value.icon }}"></i></a>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="team-info">
+                                <h4><a href="{{ team_item.url }}">{{ team_item.name }}</a></h4>
+                                <span>{{ team_item.designation|default:'' }}</span>
+
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+
+
+            </div>
+
+        </div>
+    </section>
+            <!-- team-area-end -->
+
+
+
+{% endblock %}

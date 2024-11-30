@@ -1,0 +1,42 @@
+{% load static wagtailcore_tags wagtailimages_tags %}
+<!-- slider-area -->
+<section id="home" class="slider-area slider-four fix p-relative">
+
+    <div class="slider-active">
+        <div class="single-slider slider-bg d-flex align-items-center"
+             style="background: url(static/templates/capatel/img/slider/slider_img_bg.png) no-repeat; background-position: right top;">
+            <div class="container">
+                <div class="row justify-content-center pt-50">
+                    <div class="col-lg-7 col-md-7">
+                        <div class="slider-content s-slider-content mt-150">
+                            {% if value.subheading %}
+                                <h5 data-animation="fadeInDown" data-delay=".4s">{{ value.subheading }} </h5>
+                            {% endif %}
+                            <h2 data-animation="fadeInUp" data-delay=".4s">{{ value.heading }}</h2>
+                            <p data-animation="fadeInUp" data-delay=".6s">
+                                {{ value.context|richtext }}
+                            </p>
+                            {% if value.button_text %}
+                                <div class="slider-btn mt-30">
+                                    <a href="{{ value.url }}" class="btn ss-btn mr-15">{{ value.button_text }}</a>
+                                </div>
+                            {% endif %}
+
+
+                        </div>
+                    </div>
+                    <div class="col-lg-5 col-md-5">
+                        <div class="slider-img" data-animation="fadeInUp" data-delay=".4s">
+                            {% image value.background fill-719x724 format-webp preserve-svg as img %}
+                            <img src="{{ img.url }}" alt="{{ img.alt }}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+</section>
+    <!-- slider-area-end -->

@@ -1,0 +1,17 @@
+{% extends "wagtailadmin/base.html" %}
+
+{% block content %}
+    <div id="gjs"></div>
+
+    <!-- Include GrapeJS CSS and JS -->
+    <link href="https://unpkg.com/grapesjs/dist/css/grapes.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/grapesjs"></script>
+
+    <script>
+        // Initialize the GrapeJS editor
+        const editor = grapesjs.init({
+            container: '#gjs',
+            // Add other GrapeJS options here
+        });
+    </script>
+{% endblock %}

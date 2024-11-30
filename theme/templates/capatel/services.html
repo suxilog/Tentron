@@ -1,0 +1,55 @@
+{% extends 'capatel/base/base.html' %}
+{% load static tentron_tag wagtailcore_tags %}
+{% block content %}
+
+
+			 <!-- services-three-area -->
+    <section id="services-08" class="services-08 pt-120 pb-120 p-relative"
+             style="background: url(static/templates/capatel/img/bg/aliment-left.png) no-repeat; background-position: left center;">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-title center-align mb-50 text-center">
+                        {% if page.subheading %}<h5>{{ page.subheading }}</h5>{% endif %}
+                        {% if page.heading %}<h2>{{ page.heading }}</h2>{% endif %}
+                    </div>
+
+                </div>
+
+            </div>
+            {% for service in service_pages %}
+                {% if forloop.counter|divisibleby:"4" and forloop.counter > 1 %}
+                    </div>
+                    <div class="row services-08-item--wrapper mt-0">
+                {% elif forloop.first %}
+                    <div class="row services-08-item--wrapper mt-0">
+                {% endif %}
+
+                <div class="col-lg-4 col-md-4">
+                    <div class="services-08-item">
+                        <div class="services-08-thumb">
+                            <i class="flaticon flaticon-customer-support"></i>
+                        </div>
+                        <div class="services-08-content">
+                            <h3><a href="{{ service.url }}">{{ service.beautify_title }}</a> </h3>
+                            <p>{{ service.search_description }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                {% if forloop.last %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+
+
+
+
+        </div>
+    </section>
+    {% for block in page.content %}
+        {% include_block block %}
+    {% endfor %}
+
+
+{% endblock %}

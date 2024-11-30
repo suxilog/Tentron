@@ -1,0 +1,113 @@
+{% extends 'capatel/base/base.html' %}
+{% load static tentron_tag wagtailimages_tags %}
+{% block content %}
+
+
+    <!-- inner-blog -->
+    <section class="inner-blog pt-120 pb-120">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    {% for post in page_obj %}
+                        <div class="bsingle__post mb-50">
+
+                            {% if post.blog_type == "standard" %}
+                                <div class="bsingle__post-thumb">
+                                    {% image post.get_cover fill-1180x800 format-webp preserve-svg as cover %}
+                                    <img src="{{ cover.url }}" alt="">
+                                </div>
+
+                            {% elif post.blog_type == "video" %}
+                                <div class="bsingle__post-thumb video-p">
+                                    {% image post.get_cover fill-1180x800 format-webp preserve-svg as cover %}
+                                    <img src="{{ cover.url }}" alt="">
+                                    <a href="{{ post.get_video_url }}" class="video-i popup-video"><i class="fas fa-play"></i></a>
+                                </div>
+
+                                <a href="{{ post.video_url }}" class="video-i popup-video"><i class="fas fa-play"></i></a>
+                            {% elif post.blog_type == "carousel" %}
+                                <div class="bsingle__post-thumb blog-active">
+                                    <div class="slide-post">
+                                        <img src="img/blog/inner_b3.jpg" alt="">
+                                    </div>
+                                    <div class="slide-post">
+                                        <img src="img/blog/inner_b2.jpg" alt="">
+                                    </div>
+                                    <div class="slide-post">
+                                        <img src="img/blog/inner_b1.jpg" alt="">
+                                    </div>
+                                </div>
+                            {% elif post.blog_type == "audio" %}
+                                <div class="bsingle__post-thumb embed-responsive">
+                                    {% if post.get_audio_url %}
+                                        <audio controls>
+                                            <source src="{{ post.get_audio_url }}" type="audio/mpeg">
+                                            Your browser does not support the audio element.
+                                        </audio>
+                                    {% else %}
+                                        <p>No audio file available for this post.</p>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+
+                            <div class="bsingle__content {% if post.blog_type == "quote" %}quote-post {% endif %} " {% if post.blog_type == "quote" %}style="background-image:url(img/bg/quote_bg.png)" {% endif %}>
+                                {% comment %} <div class="admin">
+                                    <a href="#"><i class="far fa-user"></i> by Hetmayar</a>
+                                </div> {% endcomment %}
+                                {% if post.blog_type == "quote" %}
+                                    <div class="quote-icon">
+                                        <img src="/static/templates/capatel/img/icon/blockquote.png" alt="">
+                                    </div>
+                                {% endif %}
+
+                                <h2><a href="{{ post.url }}">{{ post.beautify_title }}</a></h2>
+                                <p>{% if post.seo_description %}{{ post.seo_description }}{% else %}{{ post.excerpt }}{% endif %}</p>
+                                <div class="meta-info">
+                                    <ul>
+                                        {% comment %} <li><i class="fal fa-eye"></i> 100 Views  </li> {% endcomment %}
+                                        {% comment %} <li><i class="fal fa-comments"></i> 35 Comments</li> {% endcomment %}
+                                        <li><i class="fal fa-calendar-alt"></i> {{ post.first_published_at|date:"jS M Y" }}</li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                    <div class="pagination-wrap">
+                        <nav>
+                            <ul class="pagination">
+                                {% if page_obj.paginator.num_pages > 1 %}
+                                    {% if page_obj.has_previous %}
+                                        <li class="page-item"><a href="?page=1"><i class="fas fa-angle-double-left"></i></a></li>
+                                    {% endif %}
+
+                                    {% for i in page_obj.paginator.page_range %}
+                                        {% if i == 1 or i == page_obj.paginator.num_pages or i >= page_obj.number|add:"-2" and i <= page_obj.number|add:"2" %}
+                                            {% if page_obj.number == i %}
+                                                <li class="page-item active"><a href="?page={{ i }}">{{ i }}</a></li>
+                                            {% else %}
+                                                <li class="page-item"><a href="?page={{ i }}">{{ i }}</a></li>
+                                            {% endif %}
+                                        {% elif i == page_obj.number|add:"-3" or i == page_obj.number|add:"3" %}
+                                            <li class="page-item disabled"><a href="#">...</a></li>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {% if page_obj.has_next %}
+                                        <li class="page-item"><a href="?page={{ page_obj.paginator.num_pages }}"><i class="fas fa-angle-double-right"></i></a></li>
+                                    {% endif %}
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    </div>
+
+                </div>
+                {% include 'capatel/layouts/blog-sidebar.html' %}
+
+            </div>
+        </div>
+    </section>
+                                                                                                                                                                                                                                                   <!-- inner-blog-end -->
+
+{% endblock %}

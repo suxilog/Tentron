@@ -1,0 +1,290 @@
+{% extends "wagtailadmin/pages/create.html" %}
+{% load static wagtailcore_tags %}
+{% block content %}
+    {{ block.super }}
+    <div class="w-tabs">
+        <div class="tab-content">
+            <div id="gjs"></div>
+        </div>
+    </div>
+
+    <script>
+        // create
+        document.addEventListener('DOMContentLoaded', function() {
+            var htmlContentField = document.querySelector('#id_html_content');
+            htmlContentField.style.display = 'none';
+            // check if css content field exists
+
+            var gjsContainer = document.querySelector('#gjs');
+            gjsContainer.style.height = 'auto';
+            gjsContainer.style.overflow = 'visible';
+
+            var editor = grapesjs.init({
+                container: gjsContainer,
+                showOffsets: true,
+                noticeOnUnload: false,
+                fromElement: true,
+                storageManager: {
+                    type: 'local',
+                    autosave: true,
+                    autoload: true,
+                    stepsBeforeSave: 1,
+                    contentTypeJson: true,
+
+                    options: {
+                        local: {
+                            key: 'grapesjs',
+
+                        }
+                    }
+
+                },
+                assetManager: {
+                    assets: '/grapesjs/load_assets/',
+                    upload: '/grapesjs/upload_asset/',
+                    delete: '/grapesjs/delete_asset/',
+                    search: '/grapesjs/search_assets/',
+                },
+                plugins: [
+                    'gjs-blocks-basic',
+                    'grapesjs-plugin-forms',
+                    'grapesjs-component-countdown',
+                    'grapesjs-plugin-export',
+                    'grapesjs-tabs',
+                    'grapesjs-custom-code',
+                    'grapesjs-touch',
+                    'grapesjs-parser-postcss',
+                    'grapesjs-tooltip',
+                    'grapesjs-tui-image-editor',
+                    'grapesjs-typed',
+                    'grapesjs-style-bg',
+                    'grapesjs-preset-webpage',
+                    'grapesjs-navbar',
+                ],
+                pluginsOpts: {
+                    'gjs-blocks-basic': { flexGrid: true },
+                    'grapesjs-tui-image-editor': {
+                        script: [
+                            // 'https://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.6.7/fabric.min.js',
+                            'https://uicdn.toast.com/tui.code-snippet/v1.5.2/tui-code-snippet.min.js',
+                            'https://uicdn.toast.com/tui-color-picker/v2.2.7/tui-color-picker.min.js',
+                            'https://uicdn.toast.com/tui-image-editor/v3.15.2/tui-image-editor.min.js'
+                        ],
+                        style: [
+                            'https://uicdn.toast.com/tui-color-picker/v2.2.7/tui-color-picker.min.css',
+                            'https://uicdn.toast.com/tui-image-editor/v3.15.2/tui-image-editor.min.css',
+                        ],
+                    },
+                    'grapesjs-tabs': {
+                        tabsBlock: { category: 'Extra' }
+                    },
+                    'grapesjs-typed': {
+                        block: {
+                            category: 'Extra',
+                            content: {
+                                type: 'typed',
+                                'type-speed': 40,
+                                strings: [
+                                    'Text row one',
+                                    'Text row two',
+                                    'Text row three',
+                                ],
+                            }
+                        }
+                    },
+                    'grapesjs-preset-webpage': {
+                        modalImportTitle: 'Import Template',
+                        modalImportLabel: '<div style="margin-bottom: 10px; font-size: 13px;">Paste here your HTML/CSS and click Import</div>',
+                        modalImportContent: function(editor) {
+                            return editor.getHtml() + '<style>'+editor.getCss()+'</style>'
+                        },
+                    },
+                },
+
+                selectorManager: { componentFirst: true },
+                styleManager: {
+                    sectors: [{
+                        name: 'General',
+                        properties:[
+                            {
+                                extend: 'float',
+                                type: 'radio',
+                                default: 'none',
+                                    options: [
+                                        { value: 'none', className: 'fa fa-times'},
+                                        { value: 'left', className: 'fa fa-align-left'},
+                                        { value: 'right', className: 'fa fa-align-right'}
+                                    ]
+                            }
+                        ]
+                    }
+                    ]
+
+                }
+
+            });
+            editor.setComponents('<div><h1>Hello, Tentron!</h1></div>');
+
+
+                // Store and load events
+            editor.on('storage:load', function(e) { console.log('Loaded ', e) });
+            editor.on('storage:store', function(e) { console.log('Stored ', e) });
+
+
+            var form = document.querySelector('#page-edit-form');
+
+            form.addEventListener('submit', function(e) {
+
+                e.preventDefault();
+                var formCopy = form.cloneNode(true);
+                var formData = new FormData(formCopy);
+                formData.set('html_content', editor.getHtml());
+                formData.append('css_content', editor.getCss());
+                formData.append('json_content', JSON.stringify(editor.getProjectData()));
+
+                fetch(form.action, {
+                    method: 'POST',
+                    body: formData
+                }).then(response => {
+                    console.log(response);
+                    if (response.ok) {
+                        window.location.href = response.url;
+                    } else {
+                        throw new Error("Error submitting form");
+                    }
+                }).catch(error => {
+                    console.log(error);
+                    alert(error);
+                });
+
+            });
+
+        });
+    </script>
+{% endblock %}
+
+{% block extra_css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'grapesjs/css/toastr.min.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/grapesjs@0.21.1/dist/css/grapes.min.css">
+    <link rel="stylesheet" href="{% static 'grapesjs/css/grapesjs-preset-webpage.min.css' %}">
+    <link rel="stylesheet" href="{% static 'grapesjs/css/tooltip.css' %}">
+    <link rel="stylesheet" href="{% static 'grapesjs/css/demos.css' %}">
+    <link rel="stylesheet" href="{% static 'grapesjs/css/grapick.min.css' %}">
+
+
+
+    <style>
+        #gjs {
+            height: auto;
+            min-height: 300px;
+            max-height: 800px;
+            overflow-y: auto;
+        }
+        .w-panel.hidden {
+            display: none;
+        }
+        .icons-flex {
+            background-size: 70% 65% !important;
+            height: 15px;
+            width: 17px;
+            opacity: 0.9;
+        }
+        .icon-dir-row {
+            background: url("./img/flex-dir-row.png") no-repeat center;
+        }
+        .icon-dir-row-rev {
+            background: url("./img/flex-dir-row-rev.png") no-repeat center;
+        }
+        .icon-dir-col {
+            background: url("./img/flex-dir-col.png") no-repeat center;
+        }
+        .icon-dir-col-rev {
+            background: url("./img/flex-dir-col-rev.png") no-repeat center;
+        }
+        .icon-just-start{
+            background: url("./img/flex-just-start.png") no-repeat center;
+        }
+        .icon-just-end{
+            background: url("./img/flex-just-end.png") no-repeat center;
+        }
+        .icon-just-sp-bet{
+            background: url("./img/flex-just-sp-bet.png") no-repeat center;
+        }
+        .icon-just-sp-ar{
+            background: url("./img/flex-just-sp-ar.png") no-repeat center;
+        }
+        .icon-just-sp-cent{
+            background: url("./img/flex-just-sp-cent.png") no-repeat center;
+        }
+        .icon-al-start{
+            background: url("./img/flex-al-start.png") no-repeat center;
+        }
+        .icon-al-end{
+            background: url("./img/flex-al-end.png") no-repeat center;
+        }
+        .icon-al-str{
+            background: url("./img/flex-al-str.png") no-repeat center;
+        }
+        .icon-al-center{
+            background: url("./img/flex-al-center.png") no-repeat center;
+        }
+
+        [data-tooltip]::after {
+            background: rgba(51, 51, 51, 0.9);
+        }
+
+        .gjs-pn-commands {
+            min-height: 40px;
+        }
+
+        #gjs-sm-float {
+            display: none;
+        }
+
+        .gjs-logo-version {
+            background-color: #756467;
+        }
+
+        .gjs-pn-btn.gjs-pn-active {
+            box-shadow: none;
+        }
+
+        .CodeMirror {
+            min-height: 450px;
+            margin-bottom: 8px;
+        }
+        .grp-handler-close {
+            background-color: transparent;
+            color: #ddd;
+        }
+
+        .grp-handler-cp-wrap {
+            border-color: transparent;
+        }
+    </style>
+
+
+{% endblock %}
+
+{% block extra_js %}
+    {{ block.super }}
+    <script src="{% static 'grapesjs/js/toastr.min.js' %}"></script>
+    <script src="{% static 'grapesjs/js/grapesjs.min.js' %}"></script>
+    <script src="{% static 'grapesjs/js/grapesjs-preset-webpage.js' %}"></script>
+    <script src="{% static 'grapesjs/js/grapesjs-blocks-basic.js' %}"></script>
+    <script src="{% static 'grapesjs/js/grapesjs-plugin-forms.js' %}"></script>
+    <script src="{% static 'grapesjs/js/grapesjs-component-countdown.js' %}"></script>
+    <script src="{% static 'grapesjs/js/grapesjs-plugin-export.js' %}"></script>
+    <script src="{% static 'grapesjs/js/grapesjs-tabs.js' %}"></script>
+    <script src="{% static 'grapesjs/js/grapesjs-custom-code.js' %}"></script>
+    <script src="{% static 'grapesjs/js/grapesjs-touch.min.js' %}"></script>
+    <script src="{% static 'grapesjs/js/grapesjs-parser-postcss.js' %}"></script>
+    <script src="{% static 'grapesjs/js/grapesjs-tooltip.js' %}"></script>
+    <script src="{% static 'grapesjs/js/grapesjs-tui-image-editor.js' %}"></script>
+    <script src="{% static 'grapesjs/js/grapesjs-typed.min.js' %}"></script>
+    <script src="{% static 'grapesjs/js/grapesjs-style-bg.js' %}"></script>
+
+
+
+{% endblock %}

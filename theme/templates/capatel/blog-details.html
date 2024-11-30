@@ -1,0 +1,194 @@
+{% extends 'capatel/base/base.html' %}
+{% load static tentron_tag wagtailcore_tags wagtailimages_tags mptt_tags  %}
+{% block content %}
+
+
+            <!-- inner-blog -->
+    <section class="inner-blog b-details-p pt-120 pb-120">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="blog-details-wrap">
+                        <div class="details__content pb-30">
+                            <h2>{{ page.beautify_title }}</h2>
+                            <div class="meta-info">
+                                <ul>
+                                    {% comment %} <li><i class="fal fa-eye"></i> 100 Views  </li> {% endcomment %}
+                                    {% comment %} <li><i class="fal fa-comments"></i> 35 Comments</li> {% endcomment %}
+                                    <li><i class="fal fa-calendar-alt"></i> {{ page.first_published_at|date:"jS M Y" }}</li>
+                                </ul>
+                            </div>
+                            {% for block in page.content %}
+                                {% include_block block %}
+                            {% endfor %}
+                            {% if page.tags %}
+                                <div class="row">
+                                    <div class="col-xl-12 col-md-12">
+                                        <div class="post__tag">
+                                            <h5>Releted Tags</h5>
+                                            <ul>
+                                                {% for tag in page.all_tags %}
+                                                    <li><a href="{{ blog_list_page.url }}?tag={{ tag.slug }}">{{ tag.name }}</a></li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="posts_navigation pt-35 pb-35">
+                            <div class="row align-items-center">
+                                <div class="col-xl-4 col-md-5">
+                                    {% if first_published_at %}
+                                        <div class="prev-link">
+                                            <span>Prev Post</span>
+                                            <h4><a href="{{ pre_post.url }}">{{ pre_post.beautify_title }}</a></h4>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-xl-4 col-md-2 text-left text-md-center">
+                                    <a href="{{ blog_list_page.url }}" class="blog-filter"><img src="/static/templates/capatel/img/icon/c_d01.png" alt=""></a>
+                                </div>
+                                <div class="col-xl-4 col-md-5">
+                                    {% if next_post %}
+                                        <div class="next-link text-left text-md-right">
+                                            <span>next Post</span>
+                                            <h4><a href="{{ next_post.url }}">{{ next_post.beautify_title }}</a></h4>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        {% comment %} <div class="related__post mt-45 mb-85">
+                            <div class="post-title">
+                                <h4>Related Post</h4>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="related-post-wrap mb-30">
+                                        <div class="post-thumb">
+                                            <img src="/static/templates/capatel/img/blog/b_details03.jpg" alt="">
+                                        </div>
+                                        <div class="rp__content">
+                                            <h3><a href="#">A series of iOS 7 inspire
+                                                vector icons.</a></h3>
+                                            <p>Lorem ipsum dolor sit amet, consectet ur adipisicing elit, sed do eiusmod temp or
+                                                incididunt ut labore et dolore.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="related-post-wrap mb-30">
+                                        <div class="post-thumb">
+                                            <img src="/static/templates/capatel/img/blog/b_details04.jpg" alt="">
+                                        </div>
+                                        <div class="rp__content">
+                                            <h3><a href="#">Sed ut perspiciatis unde omnis.</a></h3>
+                                            <p>Lorem ipsum dolor sit amet, consectet ur adipisicing elit, sed do eiusmod temp or
+                                                incididunt ut labore et dolore.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="avatar__wrap text-center mb-45">
+                            <div class="avatar-img">
+                                <img src="/static/templates/capatel/img/blog/comment/avatar.png" alt="">
+                            </div>
+                            <div class="avatar__info">
+                                <h5>Rosalina William</h5>
+                                <div class="avatar__info-social">
+                                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                                    <a href="#"><i class="fab fa-twitter"></i></a>
+                                    <a href="#"><i class="fab fa-instagram"></i></a>
+                                    <a href="#"><i class="fab fa-behance"></i></a>
+                                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                                </div>
+                            </div>
+                            <div class="avatar__wrap-content">
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
+                                    et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+                                    aliquip ex ea commodo consequa aute irure dolor.</p>
+                            </div>
+                        </div> {% endcomment %}
+                        {% comment %} <div class="comment__wrap pb-45">
+                            <div class="comment__wrap-title">
+                                <h5>Comments</h5>
+                            </div>
+                            <div class="single__comment mb-35">
+                                <div class="comments-avatar">
+                                    <img src="/static/templates/capatel/img/blog/comment/c_01.png" alt="">
+                                </div>
+                                <div class="comment-text">
+                                    <div class="avatar-name mb-15">
+                                        <h6>ALina Kelian</h6>
+                                        <span>19th May 2018</span>
+                                        <a href="#" class="comment-reply"><i class="fas fa-reply"></i>Reply</a>
+                                    </div>
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+                                        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                                        ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                                </div>
+                            </div>
+                            <div class="single__comment children mb-35">
+                                <div class="comments-avatar">
+                                    <img src="/static/templates/capatel/img/blog/comment/c_02.png" alt="">
+                                </div>
+                                <div class="comment-text">
+                                    <div class="avatar-name mb-15">
+                                        <h6>Rlex Kelian <i class="fas fa-bookmark"></i></h6>
+                                        <span>19th May 2018</span>
+                                        <a href="#" class="comment-reply"><i class="fas fa-reply"></i>Reply</a>
+                                    </div>
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+                                        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                                        ullamco laboris nisi ut
+                                        aliquip commodo.</p>
+                                </div>
+                            </div>
+                            <div class="single__comment">
+                                <div class="comments-avatar">
+                                    <img src="/static/templates/capatel/img/blog/comment/c_03.png" alt="">
+                                </div>
+                                <div class="comment-text">
+                                    <div class="avatar-name mb-15">
+                                        <h6>Roboto Alex</h6>
+                                        <span>21th May 2018</span>
+                                        <a href="#" class="comment-reply"><i class="fas fa-reply"></i>Reply</a>
+                                    </div>
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+                                        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                                        ullamco laboris nisi ut
+                                        aliquip ex ea commodo consequat.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="comments" class="comments-area  mt-45">
+                            <div id="respond" class="comment-respond">
+                                <h3 id="reply-title" class="comment-reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="/finco/?p=2112#respond" style="display:none;">Cancel reply</a></small></h3>
+                                <form action="http://wordpress.zcube.in/finco/wp-comments-post.php" method="post" id="commentform" class="comment-form" novalidate="">
+                                    <p class="comment-notes"><span id="email-notes">Your email address will not be published.</span> Required fields are marked <span class="required">*</span></p>
+                                    <p class="comment-field"><i class="fas fa-user"></i><input id="author" placeholder="Your Name" name="author" type="text"></p>
+                                    <p class="comment-field"><i class="fas fa-envelope"></i><input id="email" placeholder="your-real-email@example.com" name="email" type="text"></p>
+                                    <p class="comment-field"><i class="fas fa-globe"></i><input id="url" name="url" placeholder="http://your-site-name.com" type="text"> </p>
+                                    <p class="comment-form-comment"><label for="comment">Comment</label> <textarea id="comment" name="comment" cols="45" rows="8" maxlength="65525" required="required"></textarea></p>
+                                    <p class="form-submit"><input name="submit" type="submit" id="submit" class="submit" value="Post Comment"> <input type="hidden" name="comment_post_ID" value="2112" id="comment_post_ID">
+                                        <input type="hidden" name="comment_parent" id="comment_parent" value="0">
+                                    </p>
+                                </form>
+                            </div>
+                                   <!-- #respond -->
+                        </div> {% endcomment %}
+
+                    </div>
+                </div>
+                {% include 'capatel/layouts/blog-sidebar.html' %}
+            </div>
+        </div>
+    </section>
+            <!-- inner-blog-end -->
+
+
+
+{% endblock %}

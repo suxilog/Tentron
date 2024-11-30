@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "tentron"
+version = "0.1.0"
+description = "Ecommerce website for international trade"
+authors = ["Charlie Sue <sue@sufob.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+Django = "~4.1"
+wagtail = "~4.2"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

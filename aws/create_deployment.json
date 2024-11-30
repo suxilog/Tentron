@@ -1,0 +1,65 @@
+{
+  "applicationName": "string",
+  "autoRollbackConfiguration": {
+     "enabled": boolean,
+     "events": [ "string" ]
+  },
+  "deploymentConfigName": "string",
+  "deploymentGroupName": "string",
+  "description": "string",
+  "fileExistsBehavior": "string",
+  "ignoreApplicationStopFailures": boolean,
+  "overrideAlarmConfiguration": {
+     "alarms": [
+        {
+           "name": "string"
+        }
+     ],
+     "enabled": boolean,
+     "ignorePollAlarmFailure": boolean
+  },
+  "revision": {
+     "appSpecContent": {
+        "content": "string",
+        "sha256": "string"
+     },
+     "gitHubLocation": {
+        "commitId": "string",
+        "repository": "string"
+     },
+     "revisionType": "string",
+     "s3Location": {
+        "bucket": "string",
+        "bundleType": "string",
+        "eTag": "string",
+        "key": "string",
+        "version": "string"
+     },
+     "string": {
+        "content": "string",
+        "sha256": "string"
+     }
+  },
+  "targetInstances": {
+     "autoScalingGroups": [ "string" ],
+     "ec2TagSet": {
+        "ec2TagSetList": [
+           [
+              {
+                 "Key": "string",
+                 "Type": "string",
+                 "Value": "string"
+              }
+           ]
+        ]
+     },
+     "tagFilters": [
+        {
+           "Key": "string",
+           "Type": "string",
+           "Value": "string"
+        }
+     ]
+  },
+  "updateOutdatedInstancesOnly": boolean
+}

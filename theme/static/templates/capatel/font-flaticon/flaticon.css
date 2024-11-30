@@ -1,0 +1,54 @@
+@font-face {
+  font-family: "flaticon";
+  src: url("./flaticon.ttf?d26c17bf66df5d4d6a4c45af1072f1b3") format("truetype"), url("./flaticon.woff?d26c17bf66df5d4d6a4c45af1072f1b3") format("woff"), url("./flaticon.woff2?d26c17bf66df5d4d6a4c45af1072f1b3") format("woff2"), url("./flaticon.eot?d26c17bf66df5d4d6a4c45af1072f1b3#iefix") format("embedded-opentype"), url("./flaticon.svg?d26c17bf66df5d4d6a4c45af1072f1b3#flaticon") format("svg");
+}
+i[class^=flaticon-]:before, i[class*=" flaticon-"]:before {
+  font-family: flaticon !important;
+  font-style: normal;
+  font-weight: normal !important;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.flaticon-briefing:before {
+  content: "\f101";
+}
+
+.flaticon-happy:before {
+  content: "\f102";
+}
+
+.flaticon-charging-station:before {
+  content: "\f103";
+}
+
+.flaticon-wind-energy:before {
+  content: "\f104";
+}
+
+.flaticon-customer-support:before {
+  content: "\f105";
+}
+
+.flaticon-solar-panel:before {
+  content: "\f106";
+}
+
+.flaticon-eco-home:before {
+  content: "\f107";
+}
+
+.flaticon-clipboard:before {
+  content: "\f108";
+}
+
+.flaticon-shipped:before {
+  content: "\f109";
+}
+
+.flaticon-coffee-cup:before {
+  content: "\f10a";
+}/*# sourceMappingURL=flaticon.css.map */

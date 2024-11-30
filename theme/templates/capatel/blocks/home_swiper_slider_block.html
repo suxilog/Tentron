@@ -1,0 +1,30 @@
+{% load static wagtailcore_tags wagtailimages_tags %}
+
+<!-- Slider main container -->
+<div class="swiper">
+    <!-- Additional required wrapper -->
+    <div class="swiper-wrapper">
+      <!-- Slides -->
+        {% for slide in value.sliders %}
+            {% image slide.background fill-1920x1080 format-webp preserve-svg as background_img %}
+            <div class="swiper-slide" style="background-image: url('{{ background_img.url }}'); background-size: cover; background-position: center;">
+                <div class="swiper-slide__content">
+                    <h2>{{ slide.heading }}</h2>
+                    <p>{{ slide.context|richtext }}</p>
+                    <a href="{{ slide.url }}" class="btn btn--primary">{{ slide.button_text }}</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <!-- If we need pagination -->
+    <div class="swiper-pagination"></div>
+
+    <!-- If we need navigation buttons -->
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-button-next"></div>
+
+    <!-- If we need scrollbar -->
+    <div class="swiper-scrollbar"></div>
+</div>
+
+

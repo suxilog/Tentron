@@ -1,0 +1,29 @@
+{% extends "wagtailadmin/base.html" %}
+{% load wagtailcore_tags %}
+{% block titletag %}{{ current_year }} Messages{% endblock %}
+
+{% block extra_css %}
+    {{ block.super }}
+    <style>
+        table.month {
+            margin: 20px;
+        }
+        table.month td, table.month th {
+            padding: 5px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    {% include "wagtailadmin/shared/header.html" with title="Message Detail" icon="date" %}
+
+    <div class="nice-padding">
+        <h1>{{ message_log.title }}</h1>
+        <p>Recipient: {{ message_log.recipient }}</p>
+        <p>Sender: {{ message_log.sender }}</p>
+        <p>Message: {{ message_log.content|richtext }}</p>
+        <p>Sent at: {{ message_log.sent_at }}</p>
+        <p>Read at: {{ message_log.read_at }}</p>
+<!-- Add more fields as needed -->
+    </div>
+{% endblock %}

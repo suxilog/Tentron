@@ -1,0 +1,8 @@
+{% extends 'capatel/base/base.html' %}
+{% load static tentron_tag %}
+{% block content %}
+    {{ html_content|safe }}
+    <style>
+        {{ page.css_content }}
+    </style>
+{% endblock %}

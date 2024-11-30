@@ -1,0 +1,60 @@
+{% load mptt_tags %}
+<!-- #right side -->
+<div class="col-sm-12 col-md-12 col-lg-4">
+    <aside class="sidebar-widget">
+        <section id="search-3" class="widget widget_search">
+            <h2 class="widget-title">Search</h2>
+            <form role="search" method="get" class="search-form" action="{% url 'search' %}">
+                <label>
+                    <span class="screen-reader-text">Search for:</span>
+                    <input type="search" id="blog_search" class="search-field" placeholder="Search &hellip;" {% if search_query %} value="{{ search_query }}"{% endif %} name="query" />
+                </label>
+                <input type="submit" class="search-submit" value="Search" />
+            </form>
+        </section>
+        {% if settings.organization.SiteSettings.social_media %}
+            <section id="custom_html-5" class="widget_text widget widget_custom_html">
+                <h2 class="widget-title">Follow Us</h2>
+                <div class="textwidget custom-html-widget">
+                    <div class="widget-social">
+                        {% for block in settings.organization.SiteSettings.social_media %}
+                            <a href="{{ block.value.link }}"><i class="{{ block.value.icon }}"></i></a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </section>
+        {% endif %}
+
+        <section id="categories-1" class="widget widget_categories">
+            <h2 class="widget-title">Categories</h2>
+            <ul>
+                {% recursetree categories %}
+                    <li class="cat-item cat-item-{{ node.id }}">
+                        <a href="{{ blog_list_page.url }}?category={{ node.slug }}">{{ node.name }}</a>
+
+                    </li>
+                {% endrecursetree %}
+            </ul>
+        </section>
+        <section id="recent-posts-4" class="widget widget_recent_entries">
+            <h2 class="widget-title">Recent Posts</h2>
+            <ul>
+                {% for post in recent_posts %}
+                    <li>
+                        <a href="{{ post.url }}">{{ post.beautify_title }}</a>
+                        <span class="post-date">{{ post.first_published_at|date:"jS M Y" }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        </section>
+        <section id="tag_cloud-1" class="widget widget_tag_cloud">
+            <h2 class="widget-title">Tag</h2>
+            <div class="tagcloud">
+                {% for tag in top_tags %}
+                    <a href="{{ blog_list_page.url }}?tag={{ tag.slug }}" class="tag-cloud-link tag-link-28 tag-link-position-1" style="font-size: 8pt;" aria-label="{{ tag.name }}">{{ tag.name }}</a>
+                {% endfor %}
+            </div>
+        </section>
+    </aside>
+</div>
+        <!-- #right side end -->

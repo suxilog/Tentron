@@ -1,0 +1,13 @@
+{% load static %}
+<figure>
+    <blockquote {% if value.quotation_link %}city="{{ value.quotation_link }}"{% endif %}>
+        {% if value.footer_text %}
+            <footer>{{ value.footer_text }}</footer>
+        {% endif %}
+        <h3>{{ value.quote }}</h3>
+
+
+    </blockquote>
+    {% if value.author %}<figcaption style='float:right;'>—{{ value.author }}</figcaption>
+    {% endif %}
+</figure>

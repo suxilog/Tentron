@@ -1,0 +1,29 @@
+{% extends 'capatel/base/base.html' %}
+{% load static tentron_tag wagtailcore_tags wagtailimages_tags  %}
+{% block content %}
+
+
+    <section class="product-form-area pb-55">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="contact-bg02 text-center">
+                        <div class="section-title  mb-50">
+                            <h2>
+                                {{ self.thank_you_text|richtext|default:"Thank you for your message." }}
+                            </h2>
+
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+        <!-- product-desc-area end -->
+
+
+
+
+{% endblock %}
