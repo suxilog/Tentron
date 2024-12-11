@@ -27,7 +27,7 @@ We encourage contributions to this project! Feel free to fork the repository, cr
 
 If you have any questions, ideas, or issues, please feel free to open an issue on the GitHub repository.
 
-You can find more about me and my work at my personal blog: [www.sufob.com](https://wwwsufob.com).
+You can find more about me and my work at my personal blog: [www.sufob.com](https://www.sufob.com).
 
 Happy coding!
 
